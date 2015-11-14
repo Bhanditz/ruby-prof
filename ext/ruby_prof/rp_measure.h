@@ -22,24 +22,30 @@ typedef enum
     MEASURE_MEMORY,
     MEASURE_GC_TIME,
     MEASURE_GC_RUNS,
+    MEASURE_VM_VERSIONS,
+    MEASURE_CONST_MISSES,
 } prof_measure_mode_t;
 
 prof_measurer_t* prof_get_measurer(prof_measure_mode_t measure);
 prof_measurer_t* prof_measurer_allocations();
+prof_measurer_t* prof_measurer_const_misses();
 prof_measurer_t* prof_measurer_cpu_time();
 prof_measurer_t* prof_measurer_gc_runs();
 prof_measurer_t* prof_measurer_gc_time();
 prof_measurer_t* prof_measurer_memory();
 prof_measurer_t* prof_measurer_process_time();
+prof_measurer_t* prof_measurer_vm_versions();
 prof_measurer_t* prof_measurer_wall_time();
 
 void rp_init_measure();
 void rp_init_measure_allocations();
+void rp_init_measure_const_misses();
 void rp_init_measure_cpu_time();
 void rp_init_measure_gc_runs();
 void rp_init_measure_gc_time();
 void rp_init_measure_memory();
 void rp_init_measure_process_time();
+void rp_init_measure_vm_versions();
 void rp_init_measure_wall_time();
 
 #endif //__RP_MEASUREMENT_H__
