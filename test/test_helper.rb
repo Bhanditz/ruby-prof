@@ -144,3 +144,13 @@ module MemoryTestHelper
     total
   end
 end
+
+module ConstMisser
+  def self.access_missing_constant!
+    MISSING_CONSTANT
+  end
+
+  def self.const_missing(name)
+    nil
+  end
+end

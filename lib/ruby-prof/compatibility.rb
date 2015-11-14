@@ -35,6 +35,14 @@ module RubyProf
     Measure::WallTime.measure
   end
 
+  def self.measure_vm_versions
+    Measure::VMVersions.measure
+  end
+
+  def self.measure_const_misses
+    Measure::ConstMisses.measure
+  end
+
   # call-seq:
   # measure_mode -> measure_mode
   #
@@ -46,7 +54,9 @@ module RubyProf
   # *RubyProf::ALLOCATIONS - Measure object allocations.  This requires a patched Ruby interpreter.
   # *RubyProf::MEMORY - Measure memory size.  This requires a patched Ruby interpreter.
   # *RubyProf::GC_RUNS - Measure number of garbage collections.  This requires a patched Ruby interpreter.
-  # *RubyProf::GC_TIME - Measure time spent doing garbage collection.  This requires a patched Ruby interpreter.*/
+  # *RubyProf::GC_TIME - Measure time spent doing garbage collection.  This requires a patched Ruby interpreter.
+  # *RubyProf::VM_VERSIONS - Measure VM state version increments. This requires a patched Ruby interpreter.
+  # *RubyProf::CONST_MISSES - Measure constant resolution failures. This requires a patched Ruby interpreter.
 
   def self.measure_mode
     @measure_mode ||= RubyProf::WALL_TIME
@@ -63,7 +73,10 @@ module RubyProf
   # *RubyProf::ALLOCATIONS - Measure object allocations.  This requires a patched Ruby interpreter.
   # *RubyProf::MEMORY - Measure memory size.  This requires a patched Ruby interpreter.
   # *RubyProf::GC_RUNS - Measure number of garbage collections.  This requires a patched Ruby interpreter.
-  # *RubyProf::GC_TIME - Measure time spent doing garbage collection.  This requires a patched Ruby interpreter.*/
+  # *RubyProf::GC_TIME - Measure time spent doing garbage collection.  This requires a patched Ruby interpreter.
+  # *RubyProf::VM_VERSIONS - Measure VM state version increments. This requires a patched Ruby interpreter.
+  # *RubyProf::CONST_MISSES - Measure constant resolution failures. This requires a patched Ruby interpreter.
+
   def self.measure_mode=(value)
     @measure_mode = value
   end
@@ -77,6 +90,8 @@ module RubyProf
     when MEMORY       then "memory"
     when GC_TIME      then "gc_time"
     when GC_RUNS      then "gc_runs"
+    when VM_VERSIONS  then "vm_versions"
+    when CONST_MISSES then "const_misses"
     end
   end
 

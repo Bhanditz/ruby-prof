@@ -48,6 +48,10 @@ module RubyProf
       RubyProf.measure_mode = RubyProf::GC_TIME
     when "gc_runs"
       RubyProf.measure_mode = RubyProf::GC_RUNS
+    when "vm_versions"
+      RubyProf.measure_mode = RubyProf::VM_VERSIONS
+    when "const_misses"
+      RubyProf.measure_mode = RubyProf::CONST_MISSES
     else
       # the default is defined in the measure_mode reader
     end

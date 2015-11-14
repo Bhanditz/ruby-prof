@@ -25,6 +25,10 @@ have_func("rb_gc_total_malloced_bytes")
 have_func("rb_heap_total_mem")
 have_func("rb_gc_heap_info")
 
+# Airbnb's VM patches
+have_func("rb_vm_state_version")
+have_func("rb_vm_const_missing_count")
+
 def add_define(name, value = nil)
   if value
     $defs.push("-D#{name}=#{value}")
