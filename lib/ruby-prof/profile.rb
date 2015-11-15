@@ -1,6 +1,8 @@
 # encoding: utf-8
 
+require 'ruby-prof/profile/base_eliminations'
 require 'set'
+
 module RubyProf
   class Profile
     # This method gets called once profiling has been completed
@@ -21,6 +23,12 @@ module RubyProf
         matchers.each{ |matcher| eliminated.concat(eliminate_methods(thread.methods, matcher)) }
       end
       eliminated
+    end
+
+    # Eliminates methods that, when represented as a call graph, have
+    # extremely large in and out degrees and make navigation impossible.
+    def eliminate_base_methods!
+      eliminate_methods!(BaseEliminations.methods)
     end
 
     private
