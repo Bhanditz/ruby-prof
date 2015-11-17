@@ -1,3 +1,5 @@
+require 'set'
+
 module RubyProf
   class Profile
     module BaseEliminations
@@ -56,6 +58,7 @@ module RubyProf
       ##
 
       add_enumerable Enumerable
+      add_enumerable Enumerator
 
       ##
       #  Collections
@@ -77,6 +80,7 @@ module RubyProf
           :uniq!,
           :"==",
           :eql?,
+          :hash,
           :to_json,
           :as_json,
           :encode_json,
@@ -103,20 +107,40 @@ module RubyProf
           :except!,
           :"==",
           :eql?,
+          :hash,
           :to_json,
           :as_json,
           :encode_json,
         ]
+
+      add_enumerable Set, [
+        :map!,
+        :select!,
+        :reject!,
+        :collect!,
+        :classify,
+        :delete_if,
+        :keep_if,
+        :divide,
+        :"==",
+        :eql?,
+        :hash,
+        :to_json,
+        :as_json,
+        :encode_json,
+      ]
 
       ##
       #  Miscellaneous Methods
       ##
 
       add_methods '<Module::GC>', :start
+      add_methods 'Mustache::Context', :find
       add_methods 'Unicorn::HttpServer', :process_client
       add_methods 'Unicorn::OobGC', :process_client
-      add_methods 'Mustache::Context', :find
+
       add_methods 'NewRelic::Agent::Instrumentation::MiddlewareTracing', :call
+      add_methods 'NewRelic::Agent::MethodTracerHelpers', :trace_execution_scoped
     end
   end
 end
