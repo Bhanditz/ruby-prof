@@ -71,7 +71,7 @@ module RubyProf
       thread.methods.reverse_each do |method|
         # Print out the file and method name
         @output << "fl=#{file(method)}\n"
-        @output << "fn=#{method_name(method)}\n"
+        @output << "fn=#{method.calltree_name}\n"
 
         # Now print out the function line number and its self time
         @output << "#{method.line} #{convert(method.self_time)}\n"
@@ -79,7 +79,7 @@ module RubyProf
         # Now print out all the children methods
         method.children.each do |callee|
           @output << "cfl=#{file(callee.target)}\n"
-          @output << "cfn=#{method_name(callee.target)}\n"
+          @output << "cfn=#{callee.target.calltree_name}\n"
           @output << "calls=#{callee.called} #{callee.line}\n"
 
           # Print out total times here!
