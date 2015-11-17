@@ -63,7 +63,7 @@ module RubyProf
 
     def aggregate_without_recursion(method_name)
       call_infos.inject(0) do |sum, call_info|
-        call_info.recursive ? sum : sum + call_info.send(method_name)
+        call_info.recursive? ? sum : sum + call_info.send(method_name)
       end
     end
   end
