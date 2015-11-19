@@ -19,15 +19,8 @@ module RubyProf
     end
 
     def detect_recursion
-      call_infos.each(&:detect_recursion)
-    end
-
-    def recalc_recursion
-      call_infos.each(&:recalc_recursion)
-    end
-
-    def clear_cached_values_which_depend_on_recursiveness
-      @total_time = @self_time = @wait_time = @children_time = nil
+      @recursive = call_infos.any?(&:recursive?) if @recursive.nil?
+      @recursive
     end
 
     def called
@@ -87,7 +80,7 @@ module RubyProf
     end
 
     def recursive?
-      call_infos.detect(&:recursive?)
+      @recursive
     end
 
     def children

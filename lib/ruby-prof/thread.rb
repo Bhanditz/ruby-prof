@@ -14,10 +14,7 @@ module RubyProf
     # It should be called only once for each thread
     def detect_recursion
       top_call_infos.each(&:detect_recursion)
-    end
-
-    def recalc_recursion
-      top_call_infos.each(&:recalc_recursion)
+      methods.each(&:detect_recursion)
     end
 
     def total_time
