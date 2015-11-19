@@ -131,16 +131,44 @@ module RubyProf
       ]
 
       ##
-      #  Miscellaneous Methods
+      #  Garbage Collection
       ##
 
       add_methods '<Module::GC>', :start
-      add_methods 'Mustache::Context', :find
+
+      ##
+      #  Unicorn
+      ##
+
       add_methods 'Unicorn::HttpServer', :process_client
       add_methods 'Unicorn::OobGC', :process_client
 
+      ##
+      #  New Relic
+      ##
+
       add_methods 'NewRelic::Agent::Instrumentation::MiddlewareTracing', :call
-      add_methods 'NewRelic::Agent::MethodTracerHelpers', :trace_execution_scoped
+
+      add_methods 'NewRelic::Agent::MethodTracerHelpers', [
+        :trace_execution_scoped,
+        :log_errors,
+      ]
+
+      add_methods '<Class::NewRelic::Agent::MethodTracerHelpers>', [
+        :trace_execution_scoped,
+        :log_errors,
+      ]
+
+      add_methods 'NewRelic::Agent::MethodTracer', [
+        :trace_execution_scoped,
+        :trace_execution_unscoped,
+      ]
+
+      ##
+      #  Miscellaneous Methods
+      ##
+
+      add_methods 'Mustache::Context', :fetch
     end
   end
 end
