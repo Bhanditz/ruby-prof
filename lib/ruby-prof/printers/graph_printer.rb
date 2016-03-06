@@ -70,9 +70,9 @@ module RubyProf
         end
         @output << "\n"
 
-        method.recalc_recursion unless method.non_recursive?
+        method.recalc_recursion if method.recursive?
         print_children(method)
-        thread.recalc_recursion unless method.non_recursive?
+        thread.recalc_recursion if method.recursive?
       end
     end
 

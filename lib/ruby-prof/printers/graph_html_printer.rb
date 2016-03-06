@@ -210,7 +210,7 @@ module RubyProf
                </tr>
                <!-- Children -->
                <%
-                  method.recalc_recursion unless method.non_recursive?
+                  method.recalc_recursion if method.recursive?
                   for callee in method.aggregate_children.sort_by(&:total_time).reverse
                     next if min_time && callee.total_time < min_time
                %>
@@ -228,7 +228,7 @@ module RubyProf
                <% end %>
                <!-- Create divider row -->
                <tr class="break"><td colspan="9"></td></tr>
-            <% thread.recalc_recursion unless method.non_recursive? %>
+            <% thread.recalc_recursion if method.recursive? %>
           <% end %>
         </tbody>
         <tfoot>

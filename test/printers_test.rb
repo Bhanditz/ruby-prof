@@ -118,7 +118,7 @@ class PrintersTest < TestCase
     output = ''
     printer = RubyProf::CallTreePrinter.new(@result)
     printer.print(output)
-    assert_match(/fn=Object#find_primes/i, output)
+    assert_match(/fn=Object::find_primes/i, output)
     assert_match(/events: wall_time/i, output)
     refute_match(/d\d\d\d\d\d/, output) # old bug looked [in error] like Object::run_primes(d5833116)
   end

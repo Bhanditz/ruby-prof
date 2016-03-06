@@ -19,15 +19,8 @@ module RubyProf
     end
 
     def detect_recursion
-      call_infos.each(&:detect_recursion)
-    end
-
-    def recalc_recursion
-      call_infos.each(&:recalc_recursion)
-    end
-
-    def clear_cached_values_which_depend_on_recursiveness
-      @total_time = @self_time = @wait_time = @children_time = nil
+      @recursive = call_infos.any?(&:recursive?) if @recursive.nil?
+      @recursive
     end
 
     def called
@@ -41,7 +34,7 @@ module RubyProf
     def total_time
       @total_time ||= begin
         call_infos.inject(0) do |sum, call_info|
-          sum += call_info.total_time unless call_info.recursive
+          sum += call_info.total_time if !call_info.recursive?
           sum
         end
       end
@@ -50,7 +43,7 @@ module RubyProf
     def self_time
       @self_time ||= begin
         call_infos.inject(0) do |sum, call_info|
-          sum += call_info.self_time unless call_info.recursive
+          sum += call_info.self_time if !call_info.recursive?
           sum
         end
       end
@@ -59,7 +52,7 @@ module RubyProf
     def wait_time
       @wait_time ||= begin
         call_infos.inject(0) do |sum, call_info|
-          sum += call_info.wait_time unless call_info.recursive
+          sum += call_info.wait_time if !call_info.recursive?
           sum
         end
       end
@@ -68,7 +61,7 @@ module RubyProf
     def children_time
       @children_time ||= begin
         call_infos.inject(0) do |sum, call_info|
-          sum += call_info.children_time unless call_info.recursive
+          sum += call_info.children_time if !call_info.recursive?
           sum
         end
       end
@@ -87,15 +80,7 @@ module RubyProf
     end
 
     def recursive?
-      call_infos.detect(&:recursive)
-    end
-
-    def non_recursive?
-      non_recursive == 1
-    end
-
-    def non_recursive
-      @non_recursive ||= call_infos.all?(&:non_recursive?) ? 1 : 0
+      @recursive
     end
 
     def children

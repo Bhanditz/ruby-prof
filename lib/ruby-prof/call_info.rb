@@ -1,4 +1,5 @@
 # encoding: utf-8
+require 'set'
 
 module RubyProf
   class CallInfo
@@ -9,30 +10,61 @@ module RubyProf
     # children:   array of call info children (can be empty)
     # target:     method info (containing an array of call infos)
 
-    attr_reader :recursive
+    attr_accessor :visits
 
-    def non_recursive?
-      @non_recursive
+    def recursive?
+      visits > 1
     end
 
-    def detect_recursion(visited_methods = Hash.new(0))
-      @recursive = (visited_methods[target] += 1) > 1
-      @non_recursive = true
-      children.each do |child|
-        @non_recursive = false if child.detect_recursion(visited_methods)
+    def detect_recursion
+      visited_targets = Hash.new(0)
+
+      current = self
+      index = 0
+
+      call_stack = []
+      index_stack = []
+
+      # Enter the current node.
+      target = current.target
+      current.visits = (visited_targets[target] += 1)
+
+      # While we still have a root...
+      while current
+        # Does this node have more children left to enumerate?
+        has_next = index < current.children.size
+
+        if has_next
+          # Consume the child at the next index.
+          child = current.children[index]
+          index += 1
+
+          # Push the parent onto the stack.
+          call_stack << current
+          index_stack << index
+
+          # The child becomes the current node.
+          current = child
+          index = 0
+
+          # Enter the current node.
+          target = current.target
+          current.visits = (visited_targets[target] += 1)
+        else
+          # Leave the current node.
+          target = current.target
+          count = (visited_targets[target] -= 1)
+          visited_targets.delete(target) if count == 0
+
+          # Pop the parent from the stack.
+          current = call_stack.pop
+          index = index_stack.pop
+        end
       end
-      visited_methods.delete(target) if (visited_methods[target] -= 1) == 0
-      return !@non_recursive
     end
 
-    def recalc_recursion(visited_methods = Hash.new(0))
-      return if @non_recursive
-      target.clear_cached_values_which_depend_on_recursiveness
-      @recursive = (visited_methods[target] += 1) > 1
-      children.each do |child|
-        child.recalc_recursion(visited_methods)
-      end
-      visited_methods.delete(target) if (visited_methods[target] -= 1) == 0
+    def recalc_recursion
+      # Unsupported for now.
     end
 
     def children_time
