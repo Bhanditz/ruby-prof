@@ -23,6 +23,10 @@ module RubyProf
       @recursive
     end
 
+    def recalc_recursion
+      # Unsupported for now.
+    end
+
     def called
       @called ||= begin
         call_infos.inject(0) do |sum, call_info|
