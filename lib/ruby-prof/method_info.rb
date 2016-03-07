@@ -19,7 +19,7 @@ module RubyProf
     end
 
     def detect_recursion
-      @recursive = call_infos.any?(&:recursive?) if @recursive.nil?
+      @recursive = call_infos.any?(&:recursive?) unless defined?(@recursive)
       @recursive
     end
 
