@@ -73,13 +73,17 @@ klass_name(VALUE klass)
     {
         result = rb_str_new2("[global]");
     }
-    else if (BUILTIN_TYPE(klass) == T_MODULE || BUILTIN_TYPE(klass) == T_CLASS)
+    else if (BUILTIN_TYPE(klass) == T_MODULE)
     {
         result = rb_class_name(klass);
     }
     else if (BUILTIN_TYPE(klass) == T_CLASS && FL_TEST(klass, FL_SINGLETON))
     {
         result = figure_singleton_name(klass);
+    }
+    else if (BUILTIN_TYPE(klass) == T_CLASS)
+    {
+        result = rb_class_name(klass);
     }
     else
     {
